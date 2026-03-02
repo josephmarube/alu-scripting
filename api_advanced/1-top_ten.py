@@ -12,7 +12,7 @@ def top_ten(subreddit):
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
 
     headers = {
-        "User-Agent": "MyRedditScript/1.0"
+        "User-Agent": "python:reddit.top_ten:v1.0 (by /u/anonymous)"
     }
 
     params = {
@@ -26,9 +26,16 @@ def top_ten(subreddit):
         allow_redirects=False
     )
 
-    if response.status_code == 200:
-        data = response.json().get("data").get("children")
-        for post in data:
-            print(post.get("data").get("title"))
-    else:
+    if response.status_code != 200:
+        print (None)
+        return
+        
+    data = response.json().get("data").get("children",[])
+
+    if not data:
         print(None)
+        return
+        
+    for post in data:
+            print(post.get("data").get("title"))
+    
